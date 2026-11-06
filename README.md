@@ -11,6 +11,10 @@ conditions the archive still holds the bytes that the operator signed for.
 requirements that a policy must satisfy are a governance question for the ENS DAO. They are not in
 this repository and the tool does not know them.
 
+Implementing it surfaced one constraint on the format that was not written down. A value must fit in
+a single 255 byte character-string, because ENS parses each character-string on its own and does not
+join them, at `DNSClaimChecker.parseRR`. A long policy URL therefore fails silently. The format is in
+[SPEC.md](SPEC.md), and that rule is §4.
 
 ## Verify this yourself
 
