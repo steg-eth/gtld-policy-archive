@@ -1,0 +1,239 @@
+{
+  "schema": "gtld-policy-archive/snapshot/1",
+  "name": "estmcmxci.co",
+  "outcome": "verified",
+  "snapshot": {
+    "date": "2026-11-06",
+    "file": "policy.md",
+    "computed_hash": "0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6",
+    "declared_hash": "0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6",
+    "final_url": "https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md",
+    "requested_url": "https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md",
+    "redirects": [],
+    "content_type": "text/plain; charset=utf-8",
+    "byte_size": 4423,
+    "http_status": 200
+  },
+  "records": {
+    "apex": {
+      "name_queried": "_ens.estmcmxci.co",
+      "url": "https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md",
+      "declared_hash": "0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6",
+      "observed_at": "2026-11-06T21:46:05.941Z",
+      "ad_status": "validated",
+      "resolvers_agreed": true,
+      "present": true,
+      "well_formed": true,
+      "problem": null,
+      "per_resolver": {
+        "cf": {
+          "answered": true,
+          "dns_status": 0,
+          "ad_status": "validated",
+          "txt_records": 3,
+          "url": "https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md",
+          "declared_hash": "0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6",
+          "present": true,
+          "well_formed": true,
+          "problem": null,
+          "strings": [
+            "a=0x703ae03fB120eC91e9Ed6d08Ce8044E498CC789B",
+            "policy_hash=0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6",
+            "policy=https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md"
+          ],
+          "other_strings": [
+            "a=0x703ae03fB120eC91e9Ed6d08Ce8044E498CC789B"
+          ]
+        },
+        "gg": {
+          "answered": true,
+          "dns_status": 0,
+          "ad_status": "validated",
+          "txt_records": 3,
+          "url": "https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md",
+          "declared_hash": "0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6",
+          "present": true,
+          "well_formed": true,
+          "problem": null,
+          "strings": [
+            "policy=https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md",
+            "policy_hash=0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6",
+            "a=0x703ae03fB120eC91e9Ed6d08Ce8044E498CC789B"
+          ],
+          "other_strings": [
+            "a=0x703ae03fB120eC91e9Ed6d08Ce8044E498CC789B"
+          ]
+        }
+      },
+      "raw": {
+        "cf": {
+          "Status": 0,
+          "TC": false,
+          "RD": true,
+          "RA": true,
+          "AD": true,
+          "CD": false,
+          "Question": [
+            {
+              "name": "_ens.estmcmxci.co",
+              "type": 16
+            }
+          ],
+          "Answer": [
+            {
+              "name": "_ens.estmcmxci.co",
+              "type": 16,
+              "TTL": 60,
+              "data": "\"a=0x703ae03fB120eC91e9Ed6d08Ce8044E498CC789B\""
+            },
+            {
+              "name": "_ens.estmcmxci.co",
+              "type": 16,
+              "TTL": 60,
+              "data": "\"policy_hash=0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6\""
+            },
+            {
+              "name": "_ens.estmcmxci.co",
+              "type": 16,
+              "TTL": 60,
+              "data": "\"policy=https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md\""
+            }
+          ]
+        },
+        "gg": {
+          "Status": 0,
+          "TC": false,
+          "RD": true,
+          "RA": true,
+          "AD": true,
+          "CD": false,
+          "Question": [
+            {
+              "name": "_ens.estmcmxci.co.",
+              "type": 16
+            }
+          ],
+          "Answer": [
+            {
+              "name": "_ens.estmcmxci.co.",
+              "type": 16,
+              "TTL": 60,
+              "data": "policy=https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md"
+            },
+            {
+              "name": "_ens.estmcmxci.co.",
+              "type": 16,
+              "TTL": 60,
+              "data": "policy_hash=0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6"
+            },
+            {
+              "name": "_ens.estmcmxci.co.",
+              "type": 16,
+              "TTL": 60,
+              "data": "a=0x703ae03fB120eC91e9Ed6d08Ce8044E498CC789B"
+            }
+          ],
+          "Comment": "Response from 108.162.192.143."
+        }
+      }
+    },
+    "nic": {
+      "name_queried": "_ens.nic.estmcmxci.co",
+      "url": null,
+      "declared_hash": null,
+      "observed_at": "2026-11-06T21:46:05.941Z",
+      "ad_status": "no-answer",
+      "resolvers_agreed": true,
+      "present": false,
+      "well_formed": false,
+      "problem": null,
+      "per_resolver": {
+        "cf": {
+          "answered": true,
+          "dns_status": 0,
+          "ad_status": "no-answer",
+          "txt_records": 0,
+          "url": null,
+          "declared_hash": null,
+          "present": false,
+          "well_formed": false,
+          "problem": "no policy= or policy_hash= string in the RRset",
+          "strings": [],
+          "other_strings": []
+        },
+        "gg": {
+          "answered": true,
+          "dns_status": 0,
+          "ad_status": "no-answer",
+          "txt_records": 0,
+          "url": null,
+          "declared_hash": null,
+          "present": false,
+          "well_formed": false,
+          "problem": "no policy= or policy_hash= string in the RRset",
+          "strings": [],
+          "other_strings": []
+        }
+      },
+      "raw": {
+        "cf": {
+          "Status": 0,
+          "TC": false,
+          "RD": true,
+          "RA": true,
+          "AD": true,
+          "CD": false,
+          "Question": [
+            {
+              "name": "_ens.nic.estmcmxci.co",
+              "type": 16
+            }
+          ],
+          "Authority": [
+            {
+              "name": "estmcmxci.co",
+              "type": 6,
+              "TTL": 1800,
+              "data": "dan.ns.cloudflare.com. dns.cloudflare.com. 2419486006 10000 2400 604800 1800"
+            }
+          ]
+        },
+        "gg": {
+          "Status": 0,
+          "TC": false,
+          "RD": true,
+          "RA": true,
+          "AD": true,
+          "CD": false,
+          "Question": [
+            {
+              "name": "_ens.nic.estmcmxci.co.",
+              "type": 16
+            }
+          ],
+          "Authority": [
+            {
+              "name": "estmcmxci.co.",
+              "type": 6,
+              "TTL": 1800,
+              "data": "dan.ns.cloudflare.com. dns.cloudflare.com. 2419486006 10000 2400 604800 1800"
+            }
+          ],
+          "Comment": "Response from 173.245.58.143."
+        }
+      }
+    }
+  },
+  "notes": [],
+  "tool": {
+    "name": "gtld-policy-archive",
+    "version": "1.0",
+    "resolvers": [
+      "cf",
+      "gg"
+    ],
+    "hash": "sha256",
+    "hashed": "raw response bytes, no normalisation",
+    "raw_sha256": "0xb64ef58fcef32fe806a521520c918ab29321b808912c1e4cca283b7bff000a79"
+  }
+}

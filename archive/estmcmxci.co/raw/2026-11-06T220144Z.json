@@ -1,0 +1,132 @@
+{
+  "name": "estmcmxci.co",
+  "observed_at": "2026-11-06T22:01:44.347Z",
+  "resolvers": [
+    "cf",
+    "gg"
+  ],
+  "apex": {
+    "name": "_ens.estmcmxci.co",
+    "answers": {
+      "cf": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": true,
+        "CD": false,
+        "Question": [
+          {
+            "name": "_ens.estmcmxci.co",
+            "type": 16
+          }
+        ],
+        "Answer": [
+          {
+            "name": "_ens.estmcmxci.co",
+            "type": 16,
+            "TTL": 60,
+            "data": "\"a=0x703ae03fB120eC91e9Ed6d08Ce8044E498CC789B\""
+          },
+          {
+            "name": "_ens.estmcmxci.co",
+            "type": 16,
+            "TTL": 60,
+            "data": "\"policy_hash=0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6\""
+          },
+          {
+            "name": "_ens.estmcmxci.co",
+            "type": 16,
+            "TTL": 60,
+            "data": "\"policy=https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md\""
+          }
+        ]
+      },
+      "gg": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": true,
+        "CD": false,
+        "Question": [
+          {
+            "name": "_ens.estmcmxci.co.",
+            "type": 16
+          }
+        ],
+        "Answer": [
+          {
+            "name": "_ens.estmcmxci.co.",
+            "type": 16,
+            "TTL": 60,
+            "data": "a=0x703ae03fB120eC91e9Ed6d08Ce8044E498CC789B"
+          },
+          {
+            "name": "_ens.estmcmxci.co.",
+            "type": 16,
+            "TTL": 60,
+            "data": "policy_hash=0x5cd65fc5028170a6bf22b5285cc312c5b67c20291b291a7bf632d6bba63e12e6"
+          },
+          {
+            "name": "_ens.estmcmxci.co.",
+            "type": 16,
+            "TTL": 60,
+            "data": "policy=https://raw.githubusercontent.com/steg-eth/gtld-policy-archive/master/fixtures/specimen-deprecation-policy.md"
+          }
+        ],
+        "Comment": "Response from 108.162.193.108."
+      }
+    }
+  },
+  "nic": {
+    "name": "_ens.nic.estmcmxci.co",
+    "answers": {
+      "cf": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": true,
+        "CD": false,
+        "Question": [
+          {
+            "name": "_ens.nic.estmcmxci.co",
+            "type": 16
+          }
+        ],
+        "Authority": [
+          {
+            "name": "estmcmxci.co",
+            "type": 6,
+            "TTL": 1800,
+            "data": "dan.ns.cloudflare.com. dns.cloudflare.com. 2419486006 10000 2400 604800 1800"
+          }
+        ]
+      },
+      "gg": {
+        "Status": 0,
+        "TC": false,
+        "RD": true,
+        "RA": true,
+        "AD": true,
+        "CD": false,
+        "Question": [
+          {
+            "name": "_ens.nic.estmcmxci.co.",
+            "type": 16
+          }
+        ],
+        "Authority": [
+          {
+            "name": "estmcmxci.co.",
+            "type": 6,
+            "TTL": 698,
+            "data": "dan.ns.cloudflare.com. dns.cloudflare.com. 2419486006 10000 2400 604800 1800"
+          }
+        ]
+      }
+    }
+  },
+  "injected": false
+}
