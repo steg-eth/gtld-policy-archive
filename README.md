@@ -11,9 +11,6 @@ conditions the archive still holds the bytes that the operator signed for.
 requirements that a policy must satisfy are a governance question for the ENS DAO. They are not in
 this repository and the tool does not know them.
 
-nick.eth asked for this on 22 April 2026, in
-[t/22020 #7](https://discuss.ens.domains/t/temp-check-authorize-tldminter-as-root-controller/22020/7).
-The record format is in [SPEC.md](SPEC.md).
 
 ## Verify this yourself
 
