@@ -93,13 +93,30 @@ away, and had to fetch it all again.
 
 [SPEC.md §6](SPEC.md#6-what-the-archiver-does) has the decision table, and §7 the failure kinds.
 
+## The signature, not the resolver's word
+
+An `AD: true` from a resolver is that resolver's claim. It is not evidence. So every record also
+carries the DNSSEC chain from `_ens.<name>` up to the root, as the wire format bytes of each link:
+the TXT RRset and its signature, then the keys and the DS of every zone between the name and the
+root, then the root's own keys.
+
+A reader validates those bytes against the trust anchor that IANA publishes, and trusts this archive
+for nothing. [SPEC.md §8](SPEC.md#8-the-dnssec-chain-that-the-archiver-stores) says what is captured,
+and §9 is a script that verifies a snapshot offline.
+
+The chain is evidence and it decides nothing. The decisions still come from the JSON path, which did
+not change. A record with `schema` `gtld-policy-archive/snapshot/2` carries a chain. A `snapshot/1`
+record predates it and carries the AD boolean alone. Neither is ever rewritten.
+
 ## Layout
 
 | Path | What it is |
 | --- | --- |
 | `archive-policy.mjs` | The tool |
 | `lib/dnssec.mjs` | The DNSSEC gate. Vendored, see the file header |
-| `lib/doh.mjs` | DNS over HTTPS, at two resolvers, with retries |
+| `lib/doh.mjs` | DNS over HTTPS in JSON, at two resolvers, with retries. The decision path |
+| `lib/wire.mjs` | DNS wire format: a query encoder and a message reader |
+| `lib/chain.mjs` | The DNSSEC chain, captured as bytes. The evidence path |
 | `lib/txt.mjs` | The TXT parser |
 | `lib/policy-fetch.mjs` | The fetch, the caps and the hash |
 | `lib/archive.mjs` | The archive on disk |

@@ -32,6 +32,11 @@ and not inventions.
 A key that the file omits is queried live. So a case can inject the apex and still read the real nic
 form.
 
+An injected apex also suppresses the DNSSEC chain capture, so a case records
+`chain.captured: false` with the reason. A chain captured now is not evidence about an answer that
+came out of a file. The two runs that read the live record do capture a chain, which is where the
+suite exercises it. See SPEC.md §8.2.
+
 ## The cases
 
 | File | Kind | What changed |

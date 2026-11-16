@@ -12,6 +12,10 @@
  *   2. Requires the apex answer to be DNSSEC validated. The whole point is
  *      that the operator signed the record, so an unvalidated answer is
  *      worthless and stops the run.
+ *   2b. Captures the DNSSEC chain from _ens.<name> to the root as wire format
+ *      bytes, which is the evidence for step 2. Step 2 is a resolver's word.
+ *      The chain lets a reader check it against IANA's root anchor instead.
+ *      It is evidence only and it decides nothing. See SPEC.md §8.
  *   3. Reads policy= and policy_hash= out of the TXT strings, in any order,
  *      and ignores every other string.
  *   4. Notes a disagreement with the nic form, then carries on with the apex.
@@ -33,6 +37,7 @@ import { fileURLToPath } from 'node:url';
 
 import { AD_STATUS, adStatus, TYPE_TXT } from './lib/dnssec.mjs';
 import { RESOLVERS, dohAll, CONCURRENCY } from './lib/doh.mjs';
+import { captureChain, chainSkipped, chainSummary } from './lib/chain.mjs';
 import { parsePolicyRecord, sameRecord } from './lib/txt.mjs';
 import {
   fetchPolicy, extensionFor, FetchProblem,
@@ -43,7 +48,7 @@ import {
   lastVerified, safeName, today, rawSha256,
 } from './lib/archive.mjs';
 
-const VERSION = '1.0';
+const VERSION = '1.1';
 const REPO_ROOT = path.dirname(fileURLToPath(import.meta.url));
 
 /* ------------------------------------------------------------------ args */
@@ -81,6 +86,7 @@ Options
   --timeout <ms>          per request timeout     (default ${TIMEOUT_MS})
   --allow-insecure-url    also read http: and file: URLs, to build test cases
   --no-nic                do not query _ens.nic.<name>
+  --no-chain              do not capture the DNSSEC chain as wire format bytes
   --inject <path>         use stored DoH answers instead of querying, to build
                           test cases. See test/README.md
   --dry-run               do everything, write nothing
@@ -104,6 +110,7 @@ const OPTS = {
   allowInsecure: flag('--allow-insecure-url'),
 };
 const QUERY_NIC = !flag('--no-nic');
+const CAPTURE_CHAIN = !flag('--no-chain');
 const DRY_RUN = flag('--dry-run');
 const AS_JSON = flag('--json');
 const CONC = num('--concurrency', CONCURRENCY);
@@ -248,6 +255,10 @@ async function processName(rawName) {
    * outcome of this observation. */
   const notes = [];
 
+  /* The chain is captured after the DNSSEC gate below, so it is null for the
+   * runs that stop at the gate. Nothing there is worth proving. */
+  let chain = null;
+
   const appendOrNot = (n, f) => DRY_RUN ? { ...f, kind: f.kind } : appendFailure(ARCHIVE_ROOT, n, f);
   const observe = (n, o) => DRY_RUN ? o : appendObservation(ARCHIVE_ROOT, n, o);
 
@@ -269,8 +280,10 @@ async function processName(rawName) {
       observed_at: observedAt, outcome: 'failed', kind, detail,
       computed_hash: extra.computed_hash ?? null,
       snapshot: null, raw_path: rawPath, raw_sha256: tool.raw_sha256,
+      chain: chainSummary(chain),
     });
-    return { name, outcome: 'failed', kind, detail, failure, records, raw_path: rawPath };
+    return { name, outcome: 'failed', kind, detail, failure, records,
+      raw_path: rawPath, chain: chainSummary(chain) };
   };
 
 
@@ -288,6 +301,27 @@ async function processName(rawName) {
     return fail('dnssec_unvalidated',
       `${apexName} did not validate, so the record is not evidence the operator signed it (${per})`);
   }
+
+  /* 2b. The gate above is a resolver's word. This is the evidence for it: the
+   * bytes of every link from the signed RRset up to the root, so a reader can
+   * check the chain against IANA's root anchor and trust this tool for
+   * nothing. A capture that fails is recorded and is never a failure kind,
+   * because the chain is evidence and the decision path is above it.
+   *
+   * It runs only when the apex answers came off the wire. A chain captured
+   * live says nothing about an answer that came out of an inject file. */
+  try {
+    chain = !CAPTURE_CHAIN
+      ? chainSkipped(apexName, '--no-chain was given')
+      : injected.apex
+        ? chainSkipped(apexName,
+          'the apex answers were injected, so a live chain is not evidence for them')
+        : await captureChain(apexName, RESOLVER_KEYS);
+  } catch (e) {
+    chain = chainSkipped(apexName, `the capture raised ${e && e.message ? e.message : String(e)}`);
+  }
+  rawBundle.chain = chain;
+  tool.raw_sha256 = rawSha256(rawBundle);
 
   /* 1, continued. Two vantage points that contradict each other cannot be
    * archived from, so the contradiction is the result. */
@@ -352,14 +386,17 @@ async function processName(rawName) {
       byte_size: got.byte_size, final_url: got.final_url,
       snapshot: previous.date, notes,
       raw_path: rawPath, raw_sha256: tool.raw_sha256,
+      chain: chainSummary(chain),
     });
     return { name, outcome: 'verified_unchanged', snapshot: previous.date,
-      computed_hash: got.computed_hash, byte_size: got.byte_size, notes, raw_path: rawPath };
+      computed_hash: got.computed_hash, byte_size: got.byte_size, notes,
+      raw_path: rawPath, chain: chainSummary(chain) };
   }
 
   if (DRY_RUN) {
     return { name, outcome: 'verified_new', snapshot: today(), dry_run: true,
-      computed_hash: got.computed_hash, byte_size: got.byte_size, notes };
+      computed_hash: got.computed_hash, byte_size: got.byte_size, notes,
+      chain: chainSummary(chain) };
   }
 
   const written = writeSnapshot(ARCHIVE_ROOT, name, {
@@ -375,7 +412,7 @@ async function processName(rawName) {
       byte_size: got.byte_size,
       http_status: got.http_status,
     },
-    records, notes, tool,
+    records, chain, notes, tool,
   });
   appendObservation(ARCHIVE_ROOT, name, {
     observed_at: observedAt, outcome: 'verified_new', kind: null,
@@ -383,10 +420,11 @@ async function processName(rawName) {
     byte_size: got.byte_size, final_url: got.final_url,
     snapshot: written.label, notes,
     raw_path: path.join(written.label, 'record.json'), raw_sha256: tool.raw_sha256,
+    chain: chainSummary(chain),
   });
   return { name, outcome: 'verified_new', snapshot: written.label,
     computed_hash: got.computed_hash, byte_size: got.byte_size,
-    dir: path.relative(REPO_ROOT, written.dir), notes };
+    dir: path.relative(REPO_ROOT, written.dir), notes, chain: chainSummary(chain) };
 }
 
 /* ----------------------------------------------------------------- run */
@@ -424,6 +462,14 @@ if (AS_JSON) {
       console.log(`${r.name}: error: ${r.detail}`);
     }
     for (const n of r.notes ?? []) console.log(`  note ${n.kind}: ${n.detail}`);
+    /* A healthy capture is silent. A chain that does not reach an anchored
+     * root is the one thing a reader must be told at the terminal, because
+     * the snapshot then carries bytes that prove less than they look like. */
+    const c = r.chain;
+    if (c && c.captured && (!c.reached_root || !c.root_anchor_matched || c.problems > 0)) {
+      console.log(`  chain ${c.links} links, root reached ${c.reached_root}, `
+        + `IANA anchor matched ${c.root_anchor_matched}, ${c.problems} problem(s). See the record.`);
+    }
   }
   if (DRY_RUN) console.log('(dry run, nothing written)');
 }
