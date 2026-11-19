@@ -126,11 +126,20 @@ const INJECT = (() => {
 function collectNames() {
   const flagsWithValues = new Set(['--population', '--archive', '--resolvers', '--concurrency',
     '--max-bytes', '--max-redirects', '--timeout', '--inject']);
+  const flagsWithoutValues = new Set(['--allow-insecure-url', '--no-nic', '--no-chain',
+    '--dry-run', '--json', '--help']);
   const argv = process.argv.slice(2);
   const positional = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a.startsWith('--')) { if (flagsWithValues.has(a)) i++; continue; }
+    if (a.startsWith('--')) {
+      if (flagsWithValues.has(a)) { i++; continue; }
+      if (flagsWithoutValues.has(a)) continue;
+      // Never treat an unknown option as a no-op: a typo such as --dryrun
+      // would otherwise archive for real and exit 0.
+      console.error(`unknown option: ${a}`);
+      process.exit(2);
+    }
     positional.push(a);
   }
   const pop = arg('--population', null);
